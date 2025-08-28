@@ -1,5 +1,8 @@
 package net.rafael.mccourse;
 
+import net.minecraft.world.item.CreativeModeTab;
+import net.minecraft.world.item.CreativeModeTabs;
+import net.rafael.mccourse.item.Moditems;
 import org.slf4j.Logger;
 
 import com.mojang.logging.LogUtils;
@@ -34,6 +37,8 @@ public class McCourseMod {
         // Register the commonSetup method for modloading
         modEventBus.addListener(this::commonSetup);
 
+        Moditems.register(modEventBus);
+
         // Register ourselves for server and other game events we are interested in.
         // Note that this is necessary if and only if we want *this* class (ExampleMod) to respond directly to events.
         // Do not add this line if there are no @SubscribeEvent-annotated functions in this class, like onServerStarting() below.
@@ -61,6 +66,10 @@ public class McCourseMod {
 
     // Add the example block item to the building blocks tab
     private void addCreative(BuildCreativeModeTabContentsEvent event) {
+        if (event.getTabKey() == CreativeModeTabs.INGREDIENTS) {
+            event.accept(Moditems.BLACK_OPAL);
+            event.accept(Moditems.RAW_BLACK_OPAL);
+        }
     }
 
     // You can use SubscribeEvent and let the Event Bus discover methods to call
